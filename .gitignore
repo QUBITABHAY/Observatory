@@ -30,3 +30,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### MacOS ###
+.DS_Store
+
+### Environment Files ###
+.env
+.env.local
+.env.*.local
