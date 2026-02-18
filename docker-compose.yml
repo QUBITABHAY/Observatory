@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:15
+    container_name: observatory-db
+    restart: always
+    environment:
+      POSTGRES_DB: observatory
+      POSTGRES_USER: observatory
+      POSTGRES_PASSWORD: observatory
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - observatory_data:/var/lib/postgresql/data
+volumes:
+  observatory_data:

@@ -1,9 +1,6 @@
 package com.qubitabhay.observatory.model;
 
 import jakarta.persistence.*;
-import org.aspectj.weaver.tools.Trace;
-import org.springframework.data.geo.Metric;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,15 +20,15 @@ public class ServiceEntity {
     @JoinColumn(name = "host_id")
     private Host host;
 
-    @OneToMany(mappedBy = "services")
+    @OneToMany(mappedBy = "service")
     private List<Metric> metrics;
 
-    @OneToMany(mappedBy = "services")
+    @OneToMany(mappedBy = "service")
     private List<LogEntry> logs;
 
-    @OneToMany(mappedBy = "services")
+    @OneToMany(mappedBy = "service")
     private List<Trace> traces;
 
-    @OneToMany(mappedBy = "services")
+    @OneToMany(mappedBy = "service")
     private List<Span> spans;
 }

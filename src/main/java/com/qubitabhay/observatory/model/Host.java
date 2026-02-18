@@ -1,8 +1,6 @@
 package com.qubitabhay.observatory.model;
 
 import jakarta.persistence.*;
-import org.springframework.data.geo.Metric;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
