@@ -2,6 +2,9 @@ package com.qubitabhay.observatory.controller;
 
 import com.qubitabhay.observatory.model.Metric;
 import com.qubitabhay.observatory.service.MetricService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/metrics")
 public class MetricController {
+    private static final Logger logger = LoggerFactory.getLogger(MetricController.class);
     private final MetricService metricService;
 
     public MetricController(MetricService metricService) {
@@ -16,10 +20,8 @@ public class MetricController {
     }
 
     @PostMapping
-    public Metric createMetric(@RequestBody Metric metric) {
-        System.out.println("print");
-        System.out.println(metric);
-        System.out.println("done");
+    public Metric createMetric(@Valid @RequestBody Metric metric) {
+        logger.info("Creating metric: {}", metric);
         return metricService.saveMetric(metric);
     }
 
