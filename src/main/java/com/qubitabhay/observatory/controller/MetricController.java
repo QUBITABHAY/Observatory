@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,15 @@ public class MetricController {
     }
 
     @GetMapping
-    public List<Metric> getMetrics() {
-        return metricService.getAllMetric();
+    public List<Metric> getMetrics(@RequestParam(required = false) String name, @RequestParam(required = false) String start, @RequestParam(required = false) String end) {
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
+
+        if (start != null && end != null) {
+            startTime = LocalDateTime.parse(start);
+            endTime = LocalDateTime.parse(end);
+        }
+
+        return metricService.searchMetric(name, startTime, endTime);
     }
 }
