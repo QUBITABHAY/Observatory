@@ -38,3 +38,6 @@ build/
 .env
 .env.local
 .env.*.local
+
+# Generated files
+*.log
