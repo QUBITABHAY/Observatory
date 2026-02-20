@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -13,7 +12,7 @@ public class LogMonitoringService {
 
     public List<String> getLastLogs(int lines) throws IOException {
 
-        Path path = Path.of("logs/application.log");
+        Path path = Path.of("/src/main/resources/logs/application.log");
 
         if (!Files.exists(path)) {
             return List.of("Log file not found");
