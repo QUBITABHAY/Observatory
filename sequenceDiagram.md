@@ -5,7 +5,7 @@ sequenceDiagram
     participant Metrics as Metrics Collector
     participant Logs as Log Collector
     participant Tracer as Trace Collector
-    participant Alert as Alert Manager
+    participant Alert as Alert Evaluator
     participant Dashboard as Monitoring Dashboard
 
     User->>App: Send Request
@@ -29,7 +29,7 @@ sequenceDiagram
 | User sends request   | User initiates a request to the application service.               |
 | App emits telemetry  | Application sends metrics, logs, and trace data to collectors.     |
 | Alert evaluation     | Metrics collector evaluates rules and triggers alerts when needed. |
-| Alert notification   | Alert manager notifies the user if thresholds are exceeded.        |
+| Alert notification   | Alert evaluator notifies the user if thresholds are exceeded.      |
 | Dashboard access     | User opens the dashboard to observe system health.                 |
 | Dashboard data fetch | Dashboard pulls metrics, logs, and traces from collectors.         |
 | Dashboard display    | Dashboard presents combined observability data to the user.        |

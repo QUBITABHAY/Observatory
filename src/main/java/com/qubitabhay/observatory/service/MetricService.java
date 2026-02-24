@@ -1,7 +1,9 @@
 package com.qubitabhay.observatory.service;
 
+import com.qubitabhay.observatory.alert.evaluator.AlertEvaluator;
 import com.qubitabhay.observatory.model.Metric;
 import com.qubitabhay.observatory.repository.MetricRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,8 +18,15 @@ public class MetricService {
         this.metricRepository = metricRepository;
     }
 
+    @Autowired
+    private AlertEvaluator alertEvaluator;
+
     public Metric saveMetric(Metric metric) {
-        return metricRepository.save(metric);
+        Metric savedMetric = metricRepository.save(metric);
+
+        alertEvaluator.evaluate(savedMetric);
+
+        return savedMetric;
     }
 
     public List<Metric> getAllMetric() {

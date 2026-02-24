@@ -73,15 +73,25 @@ class TraceCollector {
 }
 
 class AlertRule {
-  +ruleId: Integer
-  +condition: String
+  +id: Long
+  +metricName: String
+  +operator: String
   +threshold: Double
-  +evaluate()
+  +severity: String
+  +service: Service
 }
 
-class AlertManager {
-  +triggerAlert()
-  +notify()
+class Alert {
+  +id: Long
+  +message: String
+  +severity: String
+  +resolved: boolean
+  +triggeredAt: LocalDateTime
+  +service: Service
+}
+
+class AlertEvaluator {
+  +evaluate(metric: Metric)
 }
 
 class Dashboard {
@@ -96,14 +106,9 @@ class User {
   +role: String
 }
 
-class PlatformAdmin {
-}
-
-class Developer {
-}
-
-class Operator {
-}
+class PlatformAdmin
+class Developer
+class Operator
 
 Host --> Service
 Host --> Metric
@@ -121,8 +126,9 @@ MetricsCollector --> Metric
 TraceCollector --> Trace
 TraceCollector --> Span
 
-MetricsCollector --> AlertRule
-AlertRule --> AlertManager
+MetricsCollector --> AlertEvaluator
+AlertEvaluator --> AlertRule
+AlertEvaluator --> Alert
 
 User <|-- PlatformAdmin
 User <|-- Developer
@@ -135,15 +141,15 @@ Dashboard --> TraceCollector
 
 ```
 
-| Pattern | Where Applied | Purpose |
-| --- | --- | --- |
-| Observer | AlertManager -> User notifications | Decouple alert evaluation from notification delivery. |
-| Strategy | AlertRule evaluation logic | Allow multiple rule types and thresholds without changing collectors. |
-| Facade | Dashboard access to collectors | Provide a simplified view for metrics, logs, and traces retrieval. |
+| Pattern  | Where Applied                        | Purpose                                                               |
+| -------- | ------------------------------------ | --------------------------------------------------------------------- |
+| Observer | AlertEvaluator -> User notifications | Decouple alert evaluation from notification delivery.                 |
+| Strategy | AlertRule evaluation logic           | Allow multiple rule types and thresholds without changing collectors. |
+| Facade   | Dashboard access to collectors       | Provide a simplified view for metrics, logs, and traces retrieval.    |
 
-| Principle | Application |
-| --- | --- |
+| Principle     | Application                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------- |
 | Encapsulation | Collectors and domain objects expose behavior through methods, hiding internal storage details. |
-| Abstraction | Collectors define high-level operations like `collectMetric()` and `storeMetric()`. |
-| Inheritance | Roles modeled by extending `User` (PlatformAdmin, Operator, Developer). |
-| Polymorphism | Different `AlertRule` variants can evaluate conditions in their own way. |
+| Abstraction   | Collectors define high-level operations like `collectMetric()` and `storeMetric()`.             |
+| Inheritance   | Roles modeled by extending `User` (PlatformAdmin, Operator, Developer).                         |
+| Polymorphism  | Different `AlertRule` variants can evaluate conditions in their own way.                        |
