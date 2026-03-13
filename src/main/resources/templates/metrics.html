@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Observatory | Metrics')}"></head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside th:replace="~{layout :: sidebar('metrics')}"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header" style="margin-bottom: 2.5rem;">
+                <div>
+                    <h1 class="main-title" style="font-size: 2.2rem;">Metrics Explorer</h1>
+                    <nav class="category-nav">
+                        <span class="category-item active">Infrastructure</span>
+                        <span class="category-item">JVM Runtime</span>
+                        <span class="category-item">Network Flux</span>
+                        <span class="category-item">Storage</span>
+                    </nav>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline text-mono font-small"><i class="fas fa-search"></i> Metric Selector</button>
+                    <button class="btn btn-primary" id="timeRange"><i class="fas fa-clock"></i> Last 60m</button>
+                </div>
+            </header>
+
+            <!-- Top Insight Cards -->
+            <div class="metrics-grid-4" style="margin-bottom: 1.5rem;">
+                <div class="insight-card animate-fade-in">
+                    <span class="insight-label">Avg CPU Usage</span>
+                    <span class="insight-value">38.4%</span>
+                    <span class="insight-status text-success"><i class="fas fa-caret-down"></i> -2.4% vs last hour</span>
+                </div>
+                <div class="insight-card animate-fade-in delay-100">
+                    <span class="insight-label">Mem pressure</span>
+                    <span class="insight-value">62.1 GB</span>
+                    <span class="insight-status text-mono" style="color: var(--accent-yellow);">84% Capacity</span>
+                </div>
+                <div class="insight-card animate-fade-in delay-200">
+                    <span class="insight-label">active threads</span>
+                    <span class="insight-value">1,422</span>
+                    <span class="insight-status text-info"><i class="fas fa-sync"></i> Stable pooling</span>
+                </div>
+                <div class="insight-card animate-fade-in delay-300">
+                    <span class="insight-label">IO Throughput</span>
+                    <span class="insight-value">2.4 GB/s</span>
+                    <span class="insight-status text-success"><i class="fas fa-caret-up"></i> +12% burst</span>
+                </div>
+            </div>
+
+            <!-- Hero Analytics Section -->
+            <div class="glass hero-chart-container animate-fade-in delay-400">
+                <div class="hero-header">
+                    <div>
+                        <h3 class="card-title" style="font-size: 1.25rem; margin-bottom: 0.25rem;">System Load Analysis (Global)</h3>
+                        <p class="main-description" style="font-size: 0.85rem;">Combined CPU, RAM, and Disk I/O normalized aggregation.</p>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat-item">
+                            <span class="hero-stat-label">P99 Max</span>
+                            <div class="hero-stat-value" style="color: var(--accent-red);">94.2%</div>
+                        </div>
+                        <div class="hero-stat-item">
+                            <span class="hero-stat-label">Median</span>
+                            <div class="hero-stat-value text-info">41.8%</div>
+                        </div>
+                        <div class="hero-stat-item">
+                            <span class="hero-stat-label">Samples</span>
+                            <div class="hero-stat-value">8.2K</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-chart-body">
+                    <canvas id="heroMetricsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- High-Density Sparkline Grid -->
+            <div class="metrics-grid">
+                <div class="glass mini-chart-card animate-fade-in delay-500">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">CPU USER</span>
+                        <span class="mini-chart-value">24.1%</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-1"></canvas></div>
+                </div>
+                <div class="glass mini-chart-card animate-fade-in delay-600">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">CPU KERNEL</span>
+                        <span class="mini-chart-value">8.4%</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-2"></canvas></div>
+                </div>
+                <div class="glass mini-chart-card animate-fade-in delay-700">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">LOAD AVG (1M)</span>
+                        <span class="mini-chart-value">1.42</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-3"></canvas></div>
+                </div>
+                <div class="glass mini-chart-card animate-fade-in delay-800">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">NET RX (MB/s)</span>
+                        <span class="mini-chart-value">42.1</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-4"></canvas></div>
+                </div>
+                <div class="glass mini-chart-card animate-fade-in delay-900">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">NET TX (MB/s)</span>
+                        <span class="mini-chart-value">18.4</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-5"></canvas></div>
+                </div>
+                <div class="glass mini-chart-card animate-fade-in delay-1000">
+                    <div class="mini-chart-header">
+                        <span class="mini-chart-title">DISK WAIT (ms)</span>
+                        <span class="mini-chart-value">4.2</span>
+                    </div>
+                    <div class="sparkline-container"><canvas id="spark-6"></canvas></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <th:block th:replace="~{layout :: scripts}"></th:block>
+    <script src="/js/metrics.js"></script>
+</body>
+</html>

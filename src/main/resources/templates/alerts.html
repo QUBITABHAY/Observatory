@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Observatory | Alerts')}"></head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside th:replace="~{layout :: sidebar('alerts')}"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div>
+                    <h1 class="main-title">Alerts Management</h1>
+                    <p class="main-description">Monitor, triage, and resolve system issues before they affect users.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline text-success" style="border-color: rgba(52, 211, 153, 0.3);"><i class="fas fa-check-double"></i> Resolve All</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Rule</button>
+                </div>
+            </header>
+
+            <!-- Alerts Trend Chart -->
+            <div class="glass alert-chart-card animate-fade-in">
+                <h4 class="card-title text-secondary font-small uppercase tracking-widest" style="margin-bottom: 1.5rem;">Alert Frequency (24h)</h4>
+                <div style="height: calc(100% - 3rem);">
+                    <canvas id="alertsTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="glass alert-filter-bar animate-fade-in">
+                <div class="search-input-wrapper" style="flex: 1; min-width: 400px;">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search by alert name, service, or message..." class="search-input" style="padding: 0.8rem 1rem 0.8rem 3rem; background: rgba(0,0,0,0.2);">
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <select class="filter-control font-small">
+                        <option>Critical Only</option>
+                        <option>All Severities</option>
+                        <option>Warning</option>
+                        <option>Info</option>
+                    </select>
+                    <button class="btn btn-outline"><i class="fas fa-filter"></i> Filters</button>
+                </div>
+            </div>
+
+            <!-- Alerts List -->
+            <div class="glass animate-fade-in" style="padding: 0; overflow: hidden;">
+                <div class="data-table-container">
+                    <table class="data-table" style="margin: 0;">
+                        <thead>
+                            <tr style="background: rgba(15, 23, 42, 0.4);">
+                                <th style="padding: 1.25rem 1.5rem;">Time</th>
+                                <th>Severity</th>
+                                <th>Alert Definition</th>
+                                <th>Target Resource</th>
+                                <th class="text-right" style="padding-right: 2rem;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--card-border);">
+                                <td class="text-mono font-small text-secondary" style="padding: 1.25rem 1.5rem;">2m ago</td>
+                                <td><span class="badge badge-critical" style="background: rgba(251, 113, 133, 0.1); color: #fb7185;">Critical</span></td>
+                                <td class="fw-medium font-outfit">CPU Usage spike > 95% on primary-db-01</td>
+                                <td class="text-mono font-small"><span class="text-info">database</span> / us-east-1a</td>
+                                <td class="text-right" style="padding-right: 2rem;">
+                                    <div class="fw-flex-center" style="gap: 0.5rem; justify-content: flex-end;">
+                                        <button class="btn btn-outline btn-small"><i class="fas fa-terminal"></i> Logs</button>
+                                        <button class="btn btn-primary btn-small">Silence</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--card-border);">
+                                <td class="text-mono font-small text-secondary" style="padding: 1.25rem 1.5rem;">12m ago</td>
+                                <td><span class="badge badge-warning" style="background: rgba(251, 191, 36, 0.1); color: #fbbf24;">Warning</span></td>
+                                <td class="fw-medium font-outfit">High latency detected in auth-service</td>
+                                <td class="text-mono font-small"><span class="text-info">api-gateway</span> / k8s-cluster-04</td>
+                                <td class="text-right" style="padding-right: 2rem;">
+                                    <div class="fw-flex-center" style="gap: 0.5rem; justify-content: flex-end;">
+                                        <button class="btn btn-outline btn-small"><i class="fas fa-terminal"></i> Logs</button>
+                                        <button class="btn btn-primary btn-small">Silence</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <th:block th:replace="~{layout :: scripts}"></th:block>
+    <script src="/js/alerts.js"></script>
+</body>
+</html>

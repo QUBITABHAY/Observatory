@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Observatory</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Reusable Sidebar Fragment -->
+    <aside th:fragment="sidebar(activePage)" class="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <a href="/" class="nav-logo">
+            <i class="fas fa-eye"></i>
+            <span>Observatory</span>
+        </a>
+        <nav class="nav-links">
+            <a href="/dashboard" class="nav-item" th:classappend="${activePage == 'dashboard' ? 'active' : ''}">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/metrics" class="nav-item" th:classappend="${activePage == 'metrics' ? 'active' : ''}">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Metrics</span>
+            </a>
+            <a href="/logs" class="nav-item" th:classappend="${activePage == 'logs' ? 'active' : ''}">
+                <i class="fas fa-list-ul"></i>
+                <span>Logs</span>
+            </a>
+            <a href="/traces" class="nav-item" th:classappend="${activePage == 'traces' ? 'active' : ''}">
+                <i class="fas fa-project-diagram"></i>
+                <span>Traces</span>
+            </a>
+            <a href="/hosts" class="nav-item" th:classappend="${activePage == 'hosts' ? 'active' : ''}">
+                <i class="fas fa-server"></i>
+                <span>Hosts</span>
+            </a>
+            <a href="/alerts" class="nav-item" th:classappend="${activePage == 'alerts' ? 'active' : ''}">
+                <i class="fas fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Global Scripts Fragment -->
+    <th:block th:fragment="scripts">
+        <script src="/js/main.js"></script>
+    </th:block>
+
+</body>
+</html>

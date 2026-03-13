@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Observatory | Hosts')}"></head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside th:replace="~{layout :: sidebar('hosts')}"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div>
+                    <h1 class="main-title">Infrastructure Hosts</h1>
+                    <p class="main-description">Monitor your global fleet and resource allocation in real-time.</p>
+                </div>
+                <button class="btn btn-primary"><i class="fas fa-plus"></i> Add New Host</button>
+            </header>
+
+            <div class="glass animate-fade-in" style="padding: 0; overflow: hidden;">
+                <div class="data-table-container">
+                    <table class="data-table" style="margin: 0;">
+                        <thead>
+                            <tr style="background: rgba(15, 23, 42, 0.4);">
+                                <th style="padding: 1.25rem 1.5rem;">Hostname</th>
+                                <th>IP Address</th>
+                                <th>Environment</th>
+                                <th>Status</th>
+                                <th>OS Distro</th>
+                                <th>Resource Load</th>
+                                <th class="text-right" style="padding-right: 2rem;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--card-border);">
+                                <td class="text-mono fw-semibold text-info" style="padding: 1.25rem 1.5rem;">primary-db-01</td>
+                                <td class="text-mono text-secondary">10.0.1.42</td>
+                                <td><span class="badge" style="background: rgba(129, 140, 248, 0.1); color: #818cf8;">Production</span></td>
+                                <td><span class="status-indicator text-success"><i class="fas fa-circle"></i> Online</span></td>
+                                <td class="font-small">Ubuntu 22.04 LTS</td>
+                                <td>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 45%; background: var(--accent-blue);"></div>
+                                    </div>
+                                    <span class="text-mono text-secondary" style="font-size: 0.65rem;">45% CPU Usage</span>
+                                </td>
+                                <td class="text-right" style="padding-right: 2rem;">
+                                    <button class="btn btn-outline btn-small"><i class="fas fa-external-link-alt"></i></button>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--card-border);">
+                                <td class="text-mono fw-semibold text-info" style="padding: 1.25rem 1.5rem;">worker-node-04</td>
+                                <td class="text-mono text-secondary">10.0.1.88</td>
+                                <td><span class="badge" style="background: rgba(129, 140, 248, 0.1); color: #818cf8;">Production</span></td>
+                                <td><span class="status-indicator text-success"><i class="fas fa-circle"></i> Online</span></td>
+                                <td class="font-small">Debian 12</td>
+                                <td>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: 82%; background: #fb7185;"></div>
+                                    </div>
+                                    <span class="text-mono" style="font-size: 0.65rem; color: #fb7185;">82% Mem Usage</span>
+                                </td>
+                                <td class="text-right" style="padding-right: 2rem;">
+                                    <button class="btn btn-outline btn-small"><i class="fas fa-external-link-alt"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <th:block th:replace="~{layout :: scripts}"></th:block>
+    <script src="/js/hosts.js"></script>
+</body>
+</html>

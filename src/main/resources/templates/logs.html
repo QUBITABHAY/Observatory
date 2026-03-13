@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Observatory | Logs')}"></head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside th:replace="~{layout :: sidebar('logs')}"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div>
+                    <h1 class="main-title">Logs Explorer</h1>
+                    <p class="main-description">Query and analyze system-wide logs in real-time with sub-second latency.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline text-mono font-small active" id="liveToggle"><i class="fas fa-circle" style="color: var(--accent-green); font-size: 0.5rem; margin-right: 0.5rem;"></i> Live</button>
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Export</button>
+                </div>
+            </header>
+
+            <!-- Search & Control Panel -->
+            <div class="glass control-panel animate-fade-in">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search keywords (e.g., 'signature expired', 'ERROR')..." class="search-input">
+                    </div>
+                    <button class="btn btn-primary" style="padding: 0 2rem;">Search</button>
+                </div>
+                <div class="filter-grid">
+                    <div class="filter-item">
+                        <span class="filter-label">Log Level</span>
+                        <select class="filter-control" style="min-width: 140px;">
+                            <option>All Levels</option>
+                            <option>INFO</option>
+                            <option>WARN</option>
+                            <option>ERROR</option>
+                            <option>DEBUG</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Time Range</span>
+                        <select class="filter-control" style="min-width: 160px;">
+                            <option>Last 15 minutes</option>
+                            <option>Last 1 hour</option>
+                            <option>Last 24 hours</option>
+                            <option>Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <span class="filter-label">Trace ID</span>
+                        <input type="text" placeholder="UUID filter..." class="filter-control text-mono" style="width: 200px;">
+                    </div>
+                    <button class="btn btn-outline btn-small" style="align-self: flex-end; padding: 0.6rem 1rem;"><i class="fas fa-sliders-h"></i> Fields</button>
+                </div>
+            </div>
+
+            <!-- Log Stream -->
+            <div class="glass log-stream-card animate-fade-in">
+                <div class="stream-header">
+                    <div class="stream-info">
+                        <span class="stream-metric">Streaming: 42 events/sec</span>
+                        <div class="v-divider"></div>
+                        <span class="text-secondary text-mono font-small">Buffer: 1,024 lines</span>
+                    </div>
+                    <div class="stream-actions">
+                        <label class="font-small text-secondary fw-flex-center" style="cursor: pointer; gap: 0.5rem;">
+                            <input type="checkbox" checked style="accent-color: var(--accent-blue);"> Auto-scroll
+                        </label>
+                        <button class="btn-icon text-secondary"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <div id="logContainer" class="log-container">
+                    <!-- Sample Logs -->
+                    <div class="log-row">
+                        <span class="log-ts">2024-03-24 23:12:01.442</span>
+                        <span class="log-level" style="color: #fb7185;">ERROR</span>
+                        <span class="log-service">auth-service</span>
+                        <span class="log-msg">Failed to validate JWT: <span class="log-highlight">signature expired</span> for user_id: <span class="text-info">88219</span></span>
+                    </div>
+                    <div class="log-row">
+                        <span class="log-ts">2024-03-24 23:12:05.118</span>
+                        <span class="log-level" style="color: #fbbf24;">WARN</span>
+                        <span class="log-service">db-primary</span>
+                        <span class="log-msg">Connection pool near limit (<span style="color: #fca5a5;">85/100</span> connections active)</span>
+                    </div>
+                    <div class="log-row">
+                        <span class="log-ts">2024-03-24 23:12:10.892</span>
+                        <span class="log-level" style="color: #34d399;">INFO</span>
+                        <span class="log-service">api-gateway</span>
+                        <span class="log-msg">GET /api/v1/health - <span class="text-success" style="font-weight: bold;">200 OK</span> (14.2ms)</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <th:block th:replace="~{layout :: scripts}"></th:block>
+    <script src="/js/logs.js"></script>
+</body>
+</html>
