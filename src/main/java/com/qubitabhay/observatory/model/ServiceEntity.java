@@ -1,5 +1,6 @@
 package com.qubitabhay.observatory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,15 +34,19 @@ public class ServiceEntity {
     @JoinColumn(name = "host_id")
     private Host host;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "service")
     private List<Metric> metrics;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "service")
     private List<LogEntry> logs;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "service")
     private List<Trace> traces;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "service")
     private List<Span> spans;
 }

@@ -22,8 +22,8 @@ public class ObservationController {
     private final LogMonitoringService logService;
 
     public ObservationController(SystemMetricsService metricsService,
-                                 ProcessMonitoringService processService,
-                                 LogMonitoringService logService) {
+        ProcessMonitoringService processService,
+        LogMonitoringService logService) {
         this.metricsService = metricsService;
         this.processService = processService;
         this.logService = logService;

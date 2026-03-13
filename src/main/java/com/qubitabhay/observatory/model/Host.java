@@ -1,5 +1,6 @@
 package com.qubitabhay.observatory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -33,12 +34,15 @@ public class Host {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "host")
     private List<ServiceEntity> services;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "host")
     private List<Metric> metrics;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "host")
     private List<LogEntry> logs;
 }
