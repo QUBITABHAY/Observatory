@@ -28,7 +28,6 @@ public class Trace {
     private String traceId;
 
     @CreationTimestamp
-    @NotNull(message = "Started at timestamp is required")
     private LocalDateTime startedAt;
 
     @NotNull(message = "Duration is required")
