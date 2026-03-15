@@ -198,6 +198,194 @@ Success response:
 - Status: `200 OK`
 - Body: service object
 
+## Logs API
+
+### Ingest Log Entry
+
+- Method: `POST`
+- Path: `/api/logs`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "level": "ERROR",
+  "message": "Connection timeout to DB",
+  "traceId": "trace-abc-123",
+  "hostId": 1,
+  "serviceId": 1
+}
+```
+
+Validation rules:
+
+- `level`: required, non-blank
+- `message`: required, non-blank
+- `traceId`: optional
+- `hostId`: required, must exist
+- `serviceId`: required, must exist
+
+Success response:
+
+- Status: `201 Created`
+- Body:
+
+```json
+{
+  "id": 1,
+  "level": "ERROR",
+  "message": "Connection timeout to DB",
+  "traceId": "trace-abc-123",
+  "hostId": 1,
+  "serviceId": 1,
+  "timestamp": "2026-03-15T16:16:26.990924"
+}
+```
+
+### Query Logs
+
+- Method: `GET`
+- Path: `/api/logs`
+- Query params:
+  - `hostId` (optional)
+  - `serviceId` (optional)
+  - `level` (optional)
+
+Behavior:
+
+- All params are combinable; no params returns all logs
+- `level` is case-insensitive
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of log response objects
+
+---
+
+## Traces API
+
+### Ingest Trace
+
+- Method: `POST`
+- Path: `/api/traces`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "traceId": "trace-check-1773573163",
+  "duration": 321,
+  "serviceId": 1
+}
+```
+
+Validation rules:
+
+- `traceId`: required, non-blank
+- `duration`: required, positive integer (milliseconds)
+- `serviceId`: required, must exist
+
+Success response:
+
+- Status: `201 Created`
+- Body:
+
+```json
+{
+  "id": 1,
+  "traceId": "trace-check-1773573163",
+  "duration": 321,
+  "serviceId": 1,
+  "startedAt": "2026-03-15T16:42:43.495216"
+}
+```
+
+### Query Traces
+
+- Method: `GET`
+- Path: `/api/traces`
+- Query params:
+  - `serviceId` (optional)
+
+Behavior:
+
+- `serviceId` present: return traces for that service
+- no params: return all traces
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of trace response objects
+
+---
+
+## Spans API
+
+### Ingest Span
+
+- Method: `POST`
+- Path: `/api/spans`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "spanId": "span-root-01",
+  "parentSpanId": null,
+  "duration": 120,
+  "traceId": "trace-check-1773573163",
+  "serviceId": 1
+}
+```
+
+Validation rules:
+
+- `spanId`: required, non-blank
+- `parentSpanId`: optional (null for root spans)
+- `duration`: required, positive integer (milliseconds)
+- `traceId`: required, must match an existing trace's `traceId`
+- `serviceId`: required, must exist
+
+Success response:
+
+- Status: `201 Created`
+- Body:
+
+```json
+{
+  "id": 1,
+  "spanId": "span-root-01",
+  "parentSpanId": null,
+  "duration": 120,
+  "traceId": "trace-check-1773573163",
+  "serviceId": 1,
+  "timestamp": "2026-03-15T16:42:58.736279"
+}
+```
+
+### Get Spans by Trace ID
+
+- Method: `GET`
+- Path: `/api/spans`
+- Query params:
+  - `traceId` (required)
+
+Behavior:
+
+- Returns all spans belonging to the given `traceId` string
+- Missing `traceId` param returns `400 Bad Request`
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of span response objects (ordered by insertion)
+
+---
+
 ## Observation API
 
 ### Current System Metrics
