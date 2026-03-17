@@ -9,4 +9,6 @@ import java.util.List;
 public interface AlertRuleRepository extends JpaRepository<AlertRule, Long> {
 
     List<AlertRule> findByMetricNameAndService(String metricName, ServiceEntity service);
+
+    List<AlertRule> findByService_Id(Long serviceId);
 }

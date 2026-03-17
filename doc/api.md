@@ -438,3 +438,132 @@ Success response:
 
 - Status: `200 OK`
 - Body: list of log lines
+
+---
+
+## Alert Rules API
+
+### Create Alert Rule
+
+- Method: `POST`
+- Path: `/api/alert-rules`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "metricName": "cpu_usage",
+  "operator": ">",
+  "threshold": 85.0,
+  "severity": "critical",
+  "serviceId": 1
+}
+```
+
+Validation rules:
+
+- `metricName`: required, non-blank
+- `operator`: required, one of `>`, `<`, `>=`
+- `threshold`: required, zero or positive
+- `severity`: required, non-blank
+- `serviceId`: required, must exist
+
+Success response:
+
+- Status: `201 Created`
+- Body:
+
+```json
+{
+  "id": 1,
+  "metricName": "cpu_usage",
+  "operator": ">",
+  "threshold": 85.0,
+  "severity": "critical",
+  "serviceId": 1
+}
+```
+
+### List Alert Rules
+
+- Method: `GET`
+- Path: `/api/alert-rules`
+- Query params:
+  - `serviceId` (optional)
+
+Behavior:
+
+- `serviceId` present: list rules for that service
+- no query param: list all alert rules
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of alert rule response objects
+
+### Get Alert Rule By ID
+
+- Method: `GET`
+- Path: `/api/alert-rules/{id}`
+
+Success response:
+
+- Status: `200 OK`
+- Body: alert rule response object
+
+### Delete Alert Rule
+
+- Method: `DELETE`
+- Path: `/api/alert-rules/{id}`
+
+Success response:
+
+- Status: `204 No Content`
+
+---
+
+## Alerts API
+
+### List Alerts
+
+- Method: `GET`
+- Path: `/api/alerts`
+- Query params:
+  - `serviceId` (optional)
+  - `severity` (optional, case-insensitive)
+  - `resolved` (optional, `true` or `false`)
+
+Behavior:
+
+- Any combination of query params is supported
+- No query params returns all alerts
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of alert response objects
+
+### Get Alert By ID
+
+- Method: `GET`
+- Path: `/api/alerts/{id}`
+
+Success response:
+
+- Status: `200 OK`
+- Body: alert response object
+
+### Resolve Alert
+
+- Method: `PATCH`
+- Path: `/api/alerts/{id}/resolve`
+
+Behavior:
+
+- Marks the alert as resolved (`resolved = true`)
+
+Success response:
+
+- Status: `200 OK`
+- Body: updated alert response object
