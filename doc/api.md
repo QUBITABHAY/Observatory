@@ -556,7 +556,7 @@ Success response:
 
 ### Resolve Alert
 
-- Method: `PATCH`
+- Method: `POST` (also supports `PATCH` for backward compatibility)
 - Path: `/api/alerts/{id}/resolve`
 
 Behavior:
@@ -567,3 +567,27 @@ Success response:
 
 - Status: `200 OK`
 - Body: updated alert response object
+
+### Silence Alert
+
+- Method: `POST`
+- Path: `/api/alerts/{id}/silence`
+
+Behavior:
+
+- Marks the alert as silenced (`silenced = true`)
+
+Success response:
+
+- Status: `200 OK`
+- Body: updated alert response object
+
+Alert response object fields:
+
+- `id`
+- `message`
+- `severity`
+- `resolved`
+- `silenced`
+- `triggeredAt`
+- `serviceId`

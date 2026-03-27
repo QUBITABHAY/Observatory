@@ -3,6 +3,7 @@ package com.qubitabhay.observatory.controller;
 import com.qubitabhay.observatory.dto.alert.AlertResponse;
 import com.qubitabhay.observatory.service.AlertService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +35,18 @@ public class AlertController {
         return alertService.get(id);
     }
 
-    @PatchMapping("/{id}/resolve")
-    public AlertResponse resolve(@PathVariable Long id) {
+    @PostMapping("/{id}/resolve")
+    public AlertResponse resolvePost(@PathVariable Long id) {
         return alertService.resolve(id);
+    }
+
+    @PatchMapping("/{id}/resolve")
+    public AlertResponse resolvePatch(@PathVariable Long id) {
+        return alertService.resolve(id);
+    }
+
+    @PostMapping("/{id}/silence")
+    public AlertResponse silence(@PathVariable Long id) {
+        return alertService.silence(id);
     }
 }

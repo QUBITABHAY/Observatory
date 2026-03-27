@@ -7,6 +7,7 @@ public record AlertResponse(
         String message,
         String severity,
         boolean resolved,
+        boolean silenced,
         LocalDateTime triggeredAt,
         Long serviceId
 ) {

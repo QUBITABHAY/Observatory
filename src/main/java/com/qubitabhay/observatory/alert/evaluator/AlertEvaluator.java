@@ -48,6 +48,7 @@ public class AlertEvaluator {
                 alert.setTriggeredAt(LocalDateTime.now());
                 alert.setService(metric.getService());
                 alert.setResolved(false);
+                alert.setSilenced(false);
 
                 alertRepository.save(alert);
             }

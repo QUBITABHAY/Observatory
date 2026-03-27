@@ -18,6 +18,7 @@ public class Alert {
     private String message;
     private String severity;
     private boolean resolved;
+    private boolean silenced;
     private LocalDateTime triggeredAt;
 
     @ManyToOne

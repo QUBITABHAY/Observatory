@@ -50,12 +50,21 @@ public class AlertService {
         return toResponse(alertRepository.save(alert));
     }
 
+    public AlertResponse silence(Long id) {
+        Alert alert = alertRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Alert not found: " + id));
+
+        alert.setSilenced(true);
+        return toResponse(alertRepository.save(alert));
+    }
+
     private AlertResponse toResponse(Alert alert) {
         return new AlertResponse(
                 alert.getId(),
                 alert.getMessage(),
                 alert.getSeverity(),
                 alert.isResolved(),
+            alert.isSilenced(),
                 alert.getTriggeredAt(),
                 alert.getService().getId()
         );
