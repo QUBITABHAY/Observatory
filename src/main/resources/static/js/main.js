@@ -40,8 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const createChart = (canvasId, type, data, options) => {
   if (!window.Chart) return null;
-  const ctx = document.getElementById(canvasId).getContext("2d");
-  return new Chart(ctx, {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+
+  window.__chartRegistry = window.__chartRegistry || {};
+  if (window.__chartRegistry[canvasId]) {
+    window.__chartRegistry[canvasId].destroy();
+  }
+
+  const ctx = canvas.getContext("2d");
+  const chart = new Chart(ctx, {
     type: type,
     data: data,
     options: {
@@ -50,4 +58,57 @@ const createChart = (canvasId, type, data, options) => {
       ...options,
     },
   });
+
+  window.__chartRegistry[canvasId] = chart;
+  return chart;
 };
+
+const fetchJson = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Request failed: ${url}`);
+  }
+  return res.json();
+};
+
+const startLiveUpdates = (renderFn, intervalMs = 5000) => {
+  let timer = null;
+
+  const run = async () => {
+    try {
+      await renderFn();
+    } catch (e) {
+      console.error("Live update failed", e);
+    }
+  };
+
+  run();
+  timer = setInterval(run, intervalMs);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+      return;
+    }
+
+    if (!timer) {
+      run();
+      timer = setInterval(run, intervalMs);
+    }
+  });
+
+  return () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+};
+
+// Make shared helpers accessible to page-level scripts in all browsers.
+window.createChart = createChart;
+window.fetchJson = fetchJson;
+window.startLiveUpdates = startLiveUpdates;

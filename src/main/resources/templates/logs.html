@@ -60,9 +60,9 @@
             <div class="glass log-stream-card animate-fade-in">
                 <div class="stream-header">
                     <div class="stream-info">
-                        <span class="stream-metric">Streaming: 42 events/sec</span>
+                        <span class="stream-metric" id="streamMetric">Streaming: -- events</span>
                         <div class="v-divider"></div>
-                        <span class="text-secondary text-mono font-small">Buffer: 1,024 lines</span>
+                        <span class="text-secondary text-mono font-small" id="bufferMetric">Buffer: -- lines</span>
                     </div>
                     <div class="stream-actions">
                         <label class="font-small text-secondary fw-flex-center" style="cursor: pointer; gap: 0.5rem;">
@@ -72,25 +72,7 @@
                     </div>
                 </div>
                 <div id="logContainer" class="log-container">
-                    <!-- Sample Logs -->
-                    <div class="log-row">
-                        <span class="log-ts">2024-03-24 23:12:01.442</span>
-                        <span class="log-level" style="color: #fb7185;">ERROR</span>
-                        <span class="log-service">auth-service</span>
-                        <span class="log-msg">Failed to validate JWT: <span class="log-highlight">signature expired</span> for user_id: <span class="text-info">88219</span></span>
-                    </div>
-                    <div class="log-row">
-                        <span class="log-ts">2024-03-24 23:12:05.118</span>
-                        <span class="log-level" style="color: #fbbf24;">WARN</span>
-                        <span class="log-service">db-primary</span>
-                        <span class="log-msg">Connection pool near limit (<span style="color: #fca5a5;">85/100</span> connections active)</span>
-                    </div>
-                    <div class="log-row">
-                        <span class="log-ts">2024-03-24 23:12:10.892</span>
-                        <span class="log-level" style="color: #34d399;">INFO</span>
-                        <span class="log-service">api-gateway</span>
-                        <span class="log-msg">GET /api/v1/health - <span class="text-success" style="font-weight: bold;">200 OK</span> (14.2ms)</span>
-                    </div>
+                    <div>Loading logs...</div>
                 </div>
             </div>
         </main>

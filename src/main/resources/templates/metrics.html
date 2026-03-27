@@ -28,23 +28,23 @@
             <div class="metrics-grid-4" style="margin-bottom: 1.5rem;">
                 <div class="insight-card animate-fade-in">
                     <span class="insight-label">Avg CPU Usage</span>
-                    <span class="insight-value">38.4%</span>
-                    <span class="insight-status text-success"><i class="fas fa-caret-down"></i> -2.4% vs last hour</span>
+                    <span class="insight-value" id="insightCpuValue">--</span>
+                    <span class="insight-status text-success" id="insightCpuStatus">Loading...</span>
                 </div>
                 <div class="insight-card animate-fade-in delay-100">
                     <span class="insight-label">Mem pressure</span>
-                    <span class="insight-value">62.1 GB</span>
-                    <span class="insight-status text-mono" style="color: var(--accent-yellow);">84% Capacity</span>
+                    <span class="insight-value" id="insightMemValue">--</span>
+                    <span class="insight-status text-mono" style="color: var(--accent-yellow);" id="insightMemStatus">Loading...</span>
                 </div>
                 <div class="insight-card animate-fade-in delay-200">
                     <span class="insight-label">active threads</span>
-                    <span class="insight-value">1,422</span>
-                    <span class="insight-status text-info"><i class="fas fa-sync"></i> Stable pooling</span>
+                    <span class="insight-value" id="insightThreadsValue">--</span>
+                    <span class="insight-status text-info" id="insightThreadsStatus">Loading...</span>
                 </div>
                 <div class="insight-card animate-fade-in delay-300">
                     <span class="insight-label">IO Throughput</span>
-                    <span class="insight-value">2.4 GB/s</span>
-                    <span class="insight-status text-success"><i class="fas fa-caret-up"></i> +12% burst</span>
+                    <span class="insight-value" id="insightIoValue">--</span>
+                    <span class="insight-status text-success" id="insightIoStatus">Loading...</span>
                 </div>
             </div>
 
@@ -58,15 +58,15 @@
                     <div class="hero-stats">
                         <div class="hero-stat-item">
                             <span class="hero-stat-label">P99 Max</span>
-                            <div class="hero-stat-value" style="color: var(--accent-red);">94.2%</div>
+                            <div class="hero-stat-value" style="color: var(--accent-red);" id="heroP99">--</div>
                         </div>
                         <div class="hero-stat-item">
                             <span class="hero-stat-label">Median</span>
-                            <div class="hero-stat-value text-info">41.8%</div>
+                            <div class="hero-stat-value text-info" id="heroMedian">--</div>
                         </div>
                         <div class="hero-stat-item">
                             <span class="hero-stat-label">Samples</span>
-                            <div class="hero-stat-value">8.2K</div>
+                            <div class="hero-stat-value" id="heroSamples">--</div>
                         </div>
                     </div>
                 </div>
@@ -80,42 +80,42 @@
                 <div class="glass mini-chart-card animate-fade-in delay-500">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">CPU USER</span>
-                        <span class="mini-chart-value">24.1%</span>
+                        <span class="mini-chart-value" id="sparkVal1">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-1"></canvas></div>
                 </div>
                 <div class="glass mini-chart-card animate-fade-in delay-600">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">CPU KERNEL</span>
-                        <span class="mini-chart-value">8.4%</span>
+                        <span class="mini-chart-value" id="sparkVal2">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-2"></canvas></div>
                 </div>
                 <div class="glass mini-chart-card animate-fade-in delay-700">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">LOAD AVG (1M)</span>
-                        <span class="mini-chart-value">1.42</span>
+                        <span class="mini-chart-value" id="sparkVal3">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-3"></canvas></div>
                 </div>
                 <div class="glass mini-chart-card animate-fade-in delay-800">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">NET RX (MB/s)</span>
-                        <span class="mini-chart-value">42.1</span>
+                        <span class="mini-chart-value" id="sparkVal4">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-4"></canvas></div>
                 </div>
                 <div class="glass mini-chart-card animate-fade-in delay-900">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">NET TX (MB/s)</span>
-                        <span class="mini-chart-value">18.4</span>
+                        <span class="mini-chart-value" id="sparkVal5">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-5"></canvas></div>
                 </div>
                 <div class="glass mini-chart-card animate-fade-in delay-1000">
                     <div class="mini-chart-header">
                         <span class="mini-chart-title">DISK WAIT (ms)</span>
-                        <span class="mini-chart-value">4.2</span>
+                        <span class="mini-chart-value" id="sparkVal6">--</span>
                     </div>
                     <div class="sparkline-container"><canvas id="spark-6"></canvas></div>
                 </div>

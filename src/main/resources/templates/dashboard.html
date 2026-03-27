@@ -23,18 +23,18 @@
             <div class="dashboard-grid">
                 <div class="glass stat-card animate-fade-in">
                     <span class="stat-label">Active Hosts</span>
-                    <span class="stat-value">12</span>
-                    <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> +2 cluster growth</span>
+                    <span class="stat-value" id="statActiveHosts">--</span>
+                    <span class="stat-trend" id="statActiveHostsTrend">Loading...</span>
                 </div>
                 <div class="glass stat-card animate-fade-in delay-100">
                     <span class="stat-label">Throughput (Global)</span>
-                    <span class="stat-value">18.4K</span>
-                    <span class="stat-trend text-info text-mono">421 eps</span>
+                    <span class="stat-value" id="statThroughput">--</span>
+                    <span class="stat-trend text-info text-mono" id="statThroughputTrend">Loading...</span>
                 </div>
                 <div class="glass stat-card animate-fade-in delay-200">
                     <span class="stat-label">Error Rate (P99)</span>
-                    <span class="stat-value">0.04%</span>
-                    <span class="stat-trend trend-down"><i class="fas fa-arrow-down"></i> -1.2% stability</span>
+                    <span class="stat-value" id="statErrorRate">--</span>
+                    <span class="stat-trend" id="statErrorRateTrend">Loading...</span>
                 </div>
             </div>
 
@@ -44,8 +44,8 @@
                     <div class="card-header">
                         <h3>Latency Analysis (p95 / p99)</h3>
                         <div class="badge-group">
-                            <span class="badge badge-info">p99: 142ms</span>
-                            <span class="badge" style="background: rgba(52, 211, 153, 0.1); color: var(--accent-green);">p95: 88ms</span>
+                            <span class="badge badge-info" id="latencyP99Badge">p99: --</span>
+                            <span class="badge" id="latencyP95Badge" style="background: rgba(52, 211, 153, 0.1); color: var(--accent-green);">p95: --</span>
                         </div>
                     </div>
                     <div class="chart-canvas-container">
@@ -57,18 +57,10 @@
                     <div class="pie-container">
                         <canvas id="servicePieChart"></canvas>
                     </div>
-                    <div class="service-stats">
-                        <div class="service-line">
-                            <span>Auth API</span>
-                            <span class="service-value">42%</span>
-                        </div>
-                        <div class="service-line">
-                            <span>Payment SVC</span>
-                            <span class="service-value">28%</span>
-                        </div>
+                    <div class="service-stats" id="serviceStatsList">
                         <div class="service-line" style="border-bottom: none;">
-                            <span>Asset CDN</span>
-                            <span class="service-value">30%</span>
+                            <span>Loading services...</span>
+                            <span class="service-value">--</span>
                         </div>
                     </div>
                 </div>
@@ -81,10 +73,7 @@
                     <span class="badge text-success font-small" style="background: rgba(52, 211, 153, 0.1);"><i class="fas fa-circle" style="font-size: 0.4rem; margin-right: 0.25rem;"></i> Running</span>
                 </div>
                 <div id="logicConsole" class="console-body">
-                    <div>[23:41:02] INFO: Trace propagator initialized for cluster 'us-east-1'</div>
-                    <div>[23:41:05] WARN: Memory pressure detected on node-flex-09 (82%)</div>
-                    <div>[23:41:08] INFO: Garbage collection sweep completed (14ms, 128MB reclaimed)</div>
-                    <div class="text-info">[23:41:10] DEBUG: Metric 'network.io.tx' recorded value: 1.4GB/s</div>
+                    <div>Loading logs...</div>
                 </div>
             </div>
 
@@ -107,25 +96,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="text-secondary">2m ago</td>
-                                <td><span class="badge badge-critical">Critical</span></td>
-                                <td>API Latency > 2000ms in us-east-1</td>
-                                <td>auth-api</td>
-                                <td><button class="btn btn-outline btn-small">Investigate</button></td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary">15m ago</td>
-                                <td><span class="badge badge-warning">Warning</span></td>
-                                <td>Memory Usage > 85% on worker-04</td>
-                                <td>worker-node</td>
-                                <td><button class="btn btn-outline btn-small">Investigate</button></td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary">45m ago</td>
-                                <td><span class="badge badge-info">Info</span></td>
-                                <td>Deployment Success: v2.4.1</td>
-                                <td>auth-api</td>
-                                <td><span class="text-success font-small"><i class="fas fa-check"></i> Resolved</span></td>
+                                <td class="text-secondary" colspan="5">Loading alerts...</td>
                             </tr>
                         </tbody>
                     </table>
