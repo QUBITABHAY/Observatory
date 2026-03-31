@@ -2,10 +2,11 @@ package com.qubitabhay.observatory.repository;
 
 import com.qubitabhay.observatory.model.LogEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface LogEntryRepository extends JpaRepository<LogEntry, Long> {
+public interface LogEntryRepository extends JpaRepository<LogEntry, Long>, JpaSpecificationExecutor<LogEntry> {
     List<LogEntry> findByHost_Id(Long hostId);
     List<LogEntry> findByService_Id(Long serviceId);
     List<LogEntry> findByLevel(String level);

@@ -8,6 +8,9 @@ import com.qubitabhay.observatory.repository.HostRepository;
 import com.qubitabhay.observatory.repository.MetricRepository;
 import com.qubitabhay.observatory.repository.ServiceEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -60,19 +63,27 @@ public class MetricService {
         return metricRepository.findAll();
     }
 
-    public List<Metric> searchMetric(String name, LocalDateTime start, LocalDateTime end) {
-        if (name != null && start != null && end != null) {
-            return metricRepository.findByMetricNameAndTimestampBetween(name, start, end);
+    public List<Metric> searchMetric(String name, LocalDateTime from, LocalDateTime to, int page, int size) {
+        int normalizedPage = Math.max(0, page);
+        int normalizedSize = Math.min(Math.max(1, size), 500);
+
+        Specification<Metric> spec = (root, query, cb) -> cb.conjunction();
+
+        if (name != null && !name.isBlank()) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("metricName"), name));
         }
 
-        if (name != null) {
-            return metricRepository.findByMetricName(name);
+        if (from != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("timestamp"), from));
         }
 
-        if (start != null && end != null) {
-            return metricRepository.findByTimestampBetween(start, end);
+        if (to != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("timestamp"), to));
         }
 
-        return metricRepository.findAll();
+        return metricRepository.findAll(
+                spec,
+                PageRequest.of(normalizedPage, normalizedSize, Sort.by(Sort.Direction.DESC, "timestamp"))
+        ).getContent();
     }
 }

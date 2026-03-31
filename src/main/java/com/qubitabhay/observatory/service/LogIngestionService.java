@@ -8,8 +8,12 @@ import com.qubitabhay.observatory.model.ServiceEntity;
 import com.qubitabhay.observatory.repository.HostRepository;
 import com.qubitabhay.observatory.repository.LogEntryRepository;
 import com.qubitabhay.observatory.repository.ServiceEntityRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -43,28 +47,42 @@ public class LogIngestionService {
         return toResponse(logEntryRepository.save(entry));
     }
 
-    public List<LogResponse> query(Long hostId, Long serviceId, String level) {
-        List<LogEntry> results;
+    public List<LogResponse> query(Long hostId,
+                                   Long serviceId,
+                                   String level,
+                                   LocalDateTime from,
+                                   LocalDateTime to,
+                                   int page,
+                                   int size) {
+        int normalizedPage = Math.max(0, page);
+        int normalizedSize = Math.min(Math.max(1, size), 500);
 
-        if (hostId != null && serviceId != null && level != null) {
-            results = logEntryRepository.findByHost_Id(hostId).stream()
-                    .filter(l -> l.getService().getId().equals(serviceId) && l.getLevel().equalsIgnoreCase(level))
-                    .toList();
-        } else if (hostId != null && serviceId != null) {
-            results = logEntryRepository.findByHost_IdAndService_Id(hostId, serviceId);
-        } else if (hostId != null && level != null) {
-            results = logEntryRepository.findByHost_IdAndLevel(hostId, level);
-        } else if (serviceId != null && level != null) {
-            results = logEntryRepository.findByService_IdAndLevel(serviceId, level);
-        } else if (hostId != null) {
-            results = logEntryRepository.findByHost_Id(hostId);
-        } else if (serviceId != null) {
-            results = logEntryRepository.findByService_Id(serviceId);
-        } else if (level != null) {
-            results = logEntryRepository.findByLevel(level);
-        } else {
-            results = logEntryRepository.findAll();
+        Specification<LogEntry> spec = (root, query, cb) -> cb.conjunction();
+
+        if (hostId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("host").get("id"), hostId));
         }
+
+        if (serviceId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("service").get("id"), serviceId));
+        }
+
+        if (level != null && !level.isBlank()) {
+            spec = spec.and((root, query, cb) -> cb.equal(cb.lower(root.get("level")), level.toLowerCase()));
+        }
+
+        if (from != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("timestamp"), from));
+        }
+
+        if (to != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("timestamp"), to));
+        }
+
+        List<LogEntry> results = logEntryRepository.findAll(
+                spec,
+                PageRequest.of(normalizedPage, normalizedSize, Sort.by(Sort.Direction.DESC, "timestamp"))
+        ).getContent();
 
         return results.stream().map(this::toResponse).toList();
     }

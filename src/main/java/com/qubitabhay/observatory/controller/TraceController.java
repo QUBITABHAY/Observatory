@@ -5,8 +5,10 @@ import com.qubitabhay.observatory.dto.trace.TraceResponse;
 import com.qubitabhay.observatory.service.TraceIngestionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,7 +28,14 @@ public class TraceController {
     }
 
     @GetMapping
-    public List<TraceResponse> getTraces(@RequestParam(required = false) Long serviceId) {
-        return traceIngestionService.query(serviceId);
+    public List<TraceResponse> getTraces(
+            @RequestParam(required = false) Long serviceId,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size) {
+        return traceIngestionService.query(serviceId, from, to, page, size);
     }
 }

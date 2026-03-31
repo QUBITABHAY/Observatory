@@ -6,8 +6,12 @@ import com.qubitabhay.observatory.model.ServiceEntity;
 import com.qubitabhay.observatory.model.Trace;
 import com.qubitabhay.observatory.repository.ServiceEntityRepository;
 import com.qubitabhay.observatory.repository.TraceRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,10 +38,32 @@ public class TraceIngestionService {
         return toResponse(traceRepository.save(trace));
     }
 
-    public List<TraceResponse> query(Long serviceId) {
-        List<Trace> results = (serviceId != null)
-                ? traceRepository.findByService_Id(serviceId)
-                : traceRepository.findAll();
+    public List<TraceResponse> query(Long serviceId,
+                                     LocalDateTime from,
+                                     LocalDateTime to,
+                                     int page,
+                                     int size) {
+        int normalizedPage = Math.max(0, page);
+        int normalizedSize = Math.min(Math.max(1, size), 500);
+
+        Specification<Trace> spec = (root, query, cb) -> cb.conjunction();
+
+        if (serviceId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("service").get("id"), serviceId));
+        }
+
+        if (from != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("startedAt"), from));
+        }
+
+        if (to != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("startedAt"), to));
+        }
+
+        List<Trace> results = traceRepository.findAll(
+                spec,
+                PageRequest.of(normalizedPage, normalizedSize, Sort.by(Sort.Direction.DESC, "startedAt"))
+        ).getContent();
 
         return results.stream().map(this::toResponse).toList();
     }

@@ -63,19 +63,24 @@ Error response:
 - Path: `/api/metrics`
 - Query params:
   - `name` (optional)
-  - `start` (optional, ISO-8601 `LocalDateTime`)
-  - `end` (optional, ISO-8601 `LocalDateTime`)
+  - `from` (optional, ISO-8601 `LocalDateTime`)
+  - `to` (optional, ISO-8601 `LocalDateTime`)
+  - `start` (optional, backward-compatible alias for `from`)
+  - `end` (optional, backward-compatible alias for `to`)
+  - `page` (optional, default `0`)
+  - `size` (optional, default `50`, max `500`)
 
 Behavior:
 
-- `name + start + end`: filter by metric name and time range
+- `name + from + to`: filter by metric name and time range
 - `name` only: filter by metric name
-- `start + end` only: filter by time range
-- no params: return all metrics
+- `from + to` only: filter by time range
+- all filters are combinable with `page` and `size`
+- no params: return first page of all metrics
 
 Example:
 
-- `/api/metrics?name=cpu_usage&start=2026-02-20T10:00:00&end=2026-02-20T12:00:00`
+- `/api/metrics?name=cpu_usage&from=2026-02-20T10:00:00&to=2026-02-20T12:00:00&page=0&size=100`
 
 Success response:
 
@@ -251,10 +256,14 @@ Success response:
   - `hostId` (optional)
   - `serviceId` (optional)
   - `level` (optional)
+  - `from` (optional, ISO-8601 `LocalDateTime`)
+  - `to` (optional, ISO-8601 `LocalDateTime`)
+  - `page` (optional, default `0`)
+  - `size` (optional, default `50`, max `500`)
 
 Behavior:
 
-- All params are combinable; no params returns all logs
+- All params are combinable; no params returns first page of all logs
 - `level` is case-insensitive
 
 Success response:
@@ -309,11 +318,16 @@ Success response:
 - Path: `/api/traces`
 - Query params:
   - `serviceId` (optional)
+  - `from` (optional, ISO-8601 `LocalDateTime`, based on `startedAt`)
+  - `to` (optional, ISO-8601 `LocalDateTime`, based on `startedAt`)
+  - `page` (optional, default `0`)
+  - `size` (optional, default `50`, max `500`)
 
 Behavior:
 
 - `serviceId` present: return traces for that service
-- no params: return all traces
+- `from` and `to` filter by trace `startedAt`
+- no params: return first page of all traces
 
 Success response:
 

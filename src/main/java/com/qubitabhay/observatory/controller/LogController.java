@@ -5,8 +5,10 @@ import com.qubitabhay.observatory.dto.log.LogResponse;
 import com.qubitabhay.observatory.service.LogIngestionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,7 +31,13 @@ public class LogController {
     public List<LogResponse> getLogs(
             @RequestParam(required = false) Long hostId,
             @RequestParam(required = false) Long serviceId,
-            @RequestParam(required = false) String level) {
-        return logIngestionService.query(hostId, serviceId, level);
+            @RequestParam(required = false) String level,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size) {
+        return logIngestionService.query(hostId, serviceId, level, from, to, page, size);
     }
 }
