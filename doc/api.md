@@ -605,3 +605,88 @@ Alert response object fields:
 - `silenced`
 - `triggeredAt`
 - `serviceId`
+
+---
+
+## Authentication and Authorization
+
+- Authentication: HTTP Basic
+- Bootstrap admin account is created at startup if missing
+  - Username: `admin` (default, configurable)
+  - Password: `admin123` (default, configurable)
+
+Role behavior:
+
+- `ADMIN`: full API access, including user/role management and mutating platform config endpoints
+- `DEVELOPER`: telemetry ingestion (`metrics`, `logs`, `traces`, `spans`) + read access
+- `OPERATOR`: read access + `/api/observe/**` operational endpoints
+
+## Users API
+
+All endpoints below require `ADMIN` role.
+
+### Create User
+
+- Method: `POST`
+- Path: `/api/users`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "username": "alice",
+  "password": "strongPass1",
+  "role": "DEVELOPER"
+}
+```
+
+Validation rules:
+
+- `username`: required, non-blank, unique
+- `password`: required, min 8 chars
+- `role`: required, one of `ADMIN|DEVELOPER|OPERATOR`
+
+Success response:
+
+- Status: `201 Created`
+- Body: user response (without password)
+
+### List Users
+
+- Method: `GET`
+- Path: `/api/users`
+
+Success response:
+
+- Status: `200 OK`
+- Body: list of user response objects
+
+### Get User By ID
+
+- Method: `GET`
+- Path: `/api/users/{id}`
+
+Success response:
+
+- Status: `200 OK`
+- Body: user response object
+
+### Update User Role
+
+- Method: `PATCH`
+- Path: `/api/users/{id}/role`
+- Content-Type: `application/json`
+
+Request body:
+
+```json
+{
+  "role": "OPERATOR"
+}
+```
+
+Success response:
+
+- Status: `200 OK`
+- Body: updated user response object
