@@ -415,6 +415,8 @@ h1, h2, h3, h4 {
 
 .chart-canvas-container {
     height: calc(100% - 4rem);
+    position: relative;
+    width: 100%;
 }
 
 .pie-card {

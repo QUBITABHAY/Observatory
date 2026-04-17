@@ -30,10 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const [traces, hosts, services, logs, alerts] = await Promise.all([
-      safeFetch("/api/traces"),
+      safeFetch("/api/traces?size=200"),
       safeFetch("/api/hosts"),
       safeFetch("/api/services"),
-      safeFetch("/api/logs"),
+      safeFetch("/api/logs?size=100"),
       safeFetch("/api/alerts"),
     ]);
 
@@ -174,7 +174,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const statErrorRateTrend = document.getElementById("statErrorRateTrend");
 
     const hostCount = hosts.length;
-    const tracePerSecond = Math.round((traces.length / 5) * 10) / 10;
+
+    const now = Date.now();
+    const recentTraces = traces.filter(
+      (t) => now - new Date(t.startedAt).getTime() <= 15000,
+    );
+    const tracePerSecond = Math.round((recentTraces.length / 15) * 10) / 10;
+
     const errorLogs = logs.filter(
       (l) => (l.level || "").toUpperCase() === "ERROR",
     ).length;
